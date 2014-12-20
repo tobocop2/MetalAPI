@@ -15,6 +15,26 @@ class Band(models.Model):
     location = models.CharField(max_length=200)
     genre = models.CharField(max_length=200)
     description = models.TextField()
-    releases = None # Come back to this.
+    releases = None # List of foreign keys to Release
     similar_artists = None # Come back to this.
-    line_up = None # Come back to this.
+    complete_line_up = None # List of foreign keys to Lineup
+    current_lineup = None # Foreign key to Lineup
+    live_lineup = None # Foreign key to Lineup
+    past_lineup = None # Foreign key to Lineup
+
+class Release(models.Model):
+    name = models.CharField(max_length=200)
+    notes = models.TextField()
+    length = models.CharField(max_length=200)
+    release_id = models.IntegerField()
+    release_type = models.CharField(max_length=200)
+    release_year = models.IntegerField()
+    songs = None # List of foreign keys to Song.
+    line_up = None # Foreign key to Lineup.
+
+class Lineup(models.Model):
+    musicians = None # List of foreign keys to Musician
+
+class Musician(models.Model):
+    name = models.CharField(max_length=200)
+    role = models.CharField(max_length=200)
