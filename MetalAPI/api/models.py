@@ -14,7 +14,6 @@ class Band(models.Model):
     location = models.CharField(max_length=200)
     genre = models.CharField(max_length=200)
     description = models.TextField()
-    similar_artists = None # Come back to this.
 
 class Release(models.Model):
     band = models.ForeignKey(Band)
@@ -24,7 +23,6 @@ class Release(models.Model):
     release_id = models.IntegerField()
     release_type = models.CharField(max_length=200)
     release_year = models.IntegerField()
-    line_up = models.ForeignKey(Lineup, unique=True) # Foreign key to Lineup.
 
 class BandLineup(models.Model):
     # Enumerable choices for lineup type.
@@ -61,3 +59,9 @@ class Song(models.Model):
     name = models.CharField(max_length=200)
     length = models.CharField(max_length=200)
     lyrics = models.TextField()
+
+class SimilarArtists(models.Model):
+    band = models.ForeignKey(Band)
+    name = models.CharField(max_length=200)
+    country = models.CharField(max_length=200)
+    genre = models.CharField(max_length=200)
