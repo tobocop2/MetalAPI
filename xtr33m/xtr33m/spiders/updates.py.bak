@@ -1,0 +1,173 @@
+    def parse_live_releases(self,response):
+        item = response.meta['item']
+        soup = BeautifulSoup(response.body)
+        item['releases'] = {'all_releases': [],'live_releases': [],'demo_releases': [],'misc_releases': [],'main_releases': [],'release_count': 0}
+
+        release_info = [child.text.strip() for child in soup.select('tbody td') if '%' not in child.text and len(child.text.strip()) != 0]
+        release_names = release_info[0:len(release_info):3]
+        release_types = release_info[1:len(release_info):3]
+        release_years = release_info[2:len(release_info):3]
+        for release_name,release_type,release_year in zip(release_names,release_types,release_years):
+            item['releases']['live_releases'].append({'release_name': release_name, 'release_type': release_type,'release_year': release_year})
+
+        demo_releases = 'http://www.metal-archives.com/band/discography/id/%s/tab/demos' % item['id']
+        yield Request(demo_releases,callback=self.parse_demo_releases,meta={'item':item})
+
+    def parse_demo_releases(self,response):
+        item = response.meta['item']
+        soup = BeautifulSoup(response.body)
+
+        release_info = [child.text.strip() for child in soup.select('tbody td') if '%' not in child.text and len(child.text.strip()) != 0]
+        release_names = release_info[0:len(release_info):3]
+        release_types = release_info[1:len(release_info):3]
+        release_years = release_info[2:len(release_info):3]
+        for release_name,release_type,release_year in zip(release_names,release_types,release_years):
+            item['releases']['demo_releases'].append({'release_name': release_name, 'release_type': release_type,'release_year': release_year})
+        misc_releases = 'http://www.metal-archives.com/band/discography/id/%s/tab/misc' % item['id']
+        yield Request(misc_releases,callback=self.parse_misc_releases,meta={'item':item})
+
+    def parse_misc_releases(self,response):
+        item = response.meta['item']
+        soup = BeautifulSoup(response.body)
+        release_info = [child.text.strip() for child in soup.select('tbody td') if '%' not in child.text and len(child.text.strip()) != 0]
+        release_names = release_info[0:len(release_info):3]
+        release_types = release_info[1:len(release_info):3]
+        release_years = release_info[2:len(release_info):3]
+        for release_name,release_type,release_year in zip(release_names,release_types,release_years):
+            item['releases']['misc_releases'].append({'release_name': release_name, 'release_type': release_type,'release_year': release_year})
+        main_releases = 'http://www.metal-archives.com/band/discography/id/%s/tab/main' % item['id']
+        yield Request(main_releases,callback=self.parse_main_releases,meta={'item':item})
+
+    def parse_main_releases(self,response):
+        item = response.meta['item']
+        soup = BeautifulSoup(response.body)
+        release_info = [child.text.strip() for child in soup.select('tbody td') if '%' not in child.text and len(child.text.strip()) != 0]
+        release_names = release_info[0:len(release_info):3]
+        release_types = release_info[1:len(release_info):3]
+        release_years = release_info[2:len(release_info):3]
+        for release_name,release_type,release_year in zip(release_names,release_types,release_years):
+            item['releases']['main_releases'].append({'release_name': release_name, 'release_type': release_type,'release_year': release_year})
+        #send request to all releases from here
+        all_releases  = 'http://www.metal-archives.com/band/discography/id/%s/tab/all' % item['id']
+        yield Request(all_releases,callback=self.parse_releases,meta={'item':item})
+
+    def parse_releases(self,response):
+    #discography: [{release name: {songs: [{track name: {length: 100, tracknum: 1,lyrics: lyrics}}]},type: demo, year: 1981,release_id: 3}
+        #...album lineup: asdf, album notes: asdf}]
+        item = response.meta['item']
+        item['detailed_discography'] = []
+        #{all_releases: [{name: name}, {type: type}, {year: year}}]
+        soup = BeautifulSoup(response.body)
+
+        release_info = [child.text.strip() for child in soup.select('tbody td') if '%' not in child.text and len(child.text.strip()) != 0]
+        release_urls = [child['href'] for child in soup.select('tbody td a') if '%' not in child.text and len(child.text.strip()) != 0]
+        release_names = release_info[0:len(release_info):3]
+        release_types = release_info[1:len(release_info):3]
+        release_years = release_info[2:len(release_info):3]
+
+        release_count = len(release_urls)
+        item['releases']['release_count'] = release_count
+
+        if release_count == 0:
+            yield item
+            return
+
+        for release_url,release_name,release_type,release_year in zip(release_urls,release_names,release_types,release_years):
+            item['releases']['all_releases'].append({'release_name': release_name, 'release_type': release_type,'release_year': release_year})
+            release_id = release_url.split('/')[6]
+            release_dict = {'release_name': release_name, 'songs': [],'type': release_type,'year': release_year,'release_id': release_id, 'album_lineup': [],'album_notes': '','length': '', 'lyrics_count': 0,'parsed': 0}
+            item['detailed_discography'].append(release_dict)
+            # print 'the release index '+str(release_index)
+            #full_release_name = '%s - %s' % (release_name,release_id)
+            yield Request(release_url,callback=self.parse_individual_releases,meta={'item':item, 'release': release_dict})
+
+    def parse_individual_releases(self,response):
+        #album_lineup: [{member: role},...]
+        item = response.meta['item']
+        release = response.meta['release']
+        soup = BeautifulSoup(response.body)
+
+        duration = soup.select('strong')
+        release_length = ''
+        if len(duration) > 0:
+            release_length = duration[0].text
+        release['length'] = release_length
+        # print 'The release length..'+release['length']
+        band_members = soup.select('#album_members_lineup .lineupRow td a')
+        member_roles_temp = soup.select('.lineupRow td')
+        member_roles = member_roles_temp[1:len(member_roles_temp):2]
+        for member,role, in zip(band_members,member_roles):
+            release['album_lineup'].append({member.text: role.text.strip()})
+        for notes in soup.select('#album_tabs_notes'):
+            release['album_notes'] = notes.text.strip()
+
+        track_nums = []
+        for track in soup.select('.anchor'):
+            track_nums.append(int((unicode(track.next_sibling)).strip('.')))
+
+        track_count = 0
+        lyrics_count = soup.text.count("Show lyrics")
+        release['lyrics_count'] = lyrics_count
+        for child in soup.find_all('tbody'):
+            for track in child.select('.wrapWords'):
+                track_count += 1
+                track_name = track.text.strip()
+                track_name = ''.join( c for c in track_name if c not in '\n\t;' )
+                track_length = track.next_sibling.next_sibling.text.strip()
+                song_dict = {'track_name': track_name, 'number': track_count,'length': track_length,'lyrics': ''}
+                release['songs'].append(song_dict)
+
+                lyrics_tag = track.next_sibling.next_sibling.next_sibling.next_sibling.find_all(href=True)
+                lyrics_base_url = 'http://www.metal-archives.com/release/ajax-view-lyrics/id/'
+                if len(lyrics_tag) > 0:
+                    lyrics_url_value = lyrics_tag[0].get('href')
+                    lyrics_id = ''.join([char for char in lyrics_url_value if char.isdigit()])
+                    lyrics_url = lyrics_base_url+lyrics_id
+                    meta={'item':item,'release': release, 'track': song_dict}
+                    yield Request(lyrics_url,callback=self.parse_lyrics,meta=meta)
+
+        if lyrics_count == 0:
+
+            release['parsed'] = 1
+            dcount = sum(r.get('parsed', 0) for r in item['detailed_discography'])
+            print 'No lyrics for release. {} of {} releases processed'.format(dcount, len(item['detailed_discography']))
+
+            if all(r['parsed'] for r in item['detailed_discography']):
+                # text_file = 'bands.txt'
+                # all_bands = 'total_bands.txt'
+                # with open(text_file, 'a') as f:
+                #     f.write(item['name']+'\n')
+                # for band in total_bands:
+                #     with open(all_bands, 'a') as f:
+                #         f.write(band+'\n')
+                #         total_bands.remove(band)
+                yield item
+
+
+    def parse_lyrics(self,response):
+        item = response.meta['item']
+        release = response.meta['release']
+        track = response.meta['track']
+        soup = BeautifulSoup(response.body)
+        lyrics = soup.text
+        track['lyrics'] = lyrics
+        release['lyrics_count'] -= 1
+
+        # on the last lyric, the count should be 0
+        if release['lyrics_count'] == 0:
+
+            release['parsed'] = 1
+            dcount = sum(r.get('parsed', 0) for r in item['detailed_discography'])
+            print 'Lyrics for release done. {} of {} releases processed'.format(dcount, len(item['detailed_discography']))
+
+            if all(r['parsed'] for r in item['detailed_discography']):
+                #text_file = 'bands.txt'
+                #all_bands = 'total_bands.txt'
+                #with open(text_file, 'a') as f:
+                #    f.write(item['name']+'\n')
+                #for band in total_bands:
+                #    with open(all_bands, 'a') as f:
+                #        f.write(band+'\n')
+                #        total_bands.remove(band)
+                yield item
+
