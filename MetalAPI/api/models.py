@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class Band(models.Model):
     ma_id = models.IntegerField()
@@ -15,31 +14,49 @@ class Band(models.Model):
     location = models.CharField(max_length=200)
     genre = models.CharField(max_length=200)
     description = models.TextField()
-    releases = None # List of foreign keys to Release
     similar_artists = None # Come back to this.
-    complete_line_up = None # List of foreign keys to Lineup
-    current_lineup = models.ForeignKey(Lineup)
-    live_lineup = models.ForeignKey(Lineup)
-    past_lineup = models.ForeignKey(Lineup)
 
 class Release(models.Model):
+    band = models.ForeignKey(Band)
     name = models.CharField(max_length=200)
     notes = models.TextField()
     length = models.CharField(max_length=200)
     release_id = models.IntegerField()
     release_type = models.CharField(max_length=200)
     release_year = models.IntegerField()
-    songs = None # List of foreign keys to Song.
-    line_up = models.ForeignKey(Lineup) # Foreign key to Lineup.
+    line_up = models.ForeignKey(Lineup, unique=True) # Foreign key to Lineup.
 
-class Lineup(models.Model):
-    musicians = None # List of foreign keys to Musician
+class BandLineup(models.Model):
+    # Enumerable choices for lineup type.
+    CURRENT = 'CR'
+    LIVE = 'LI'
+    PAST = 'PA'
+    LINEUP_TYPES = (
+        (CURRENT, 'current'),
+        (LIVE, 'live'),
+        (PAST, 'past'),
+    )
 
-class Musician(models.Model):
+    band = models.ForeignKey(Band)
+    lineup_type = models.CharField(max_length=2, choices=LINEUP_TYPES)
+
+class ReleaseLineup(models.Model):
+    release = models.ForeignKey(Release)
+
+# Make this generic later
+class BandMusician(models.Model):
+    lineup = models.ForeignKey(BandLineup)
+    name = models.CharField(max_length=200)
+    role = models.CharField(max_length=200)
+
+# Make this generic later
+class ReleaseMusician(models.Model):
+    lineup = models.ForeignKey(ReleaseLineup)
     name = models.CharField(max_length=200)
     role = models.CharField(max_length=200)
 
 class Song(models.Model):
+    release = models.ForeignKey(Release)
     track_number = models.IntegerField()
     name = models.CharField(max_length=200)
     length = models.CharField(max_length=200)
