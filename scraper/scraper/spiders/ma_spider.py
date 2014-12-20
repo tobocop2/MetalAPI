@@ -1,6 +1,6 @@
 from scrapy.spider import Spider
 from scrapy.http import Request
-from xtr33m.items import band_item
+from scraper.items import band_item
 from bs4 import BeautifulSoup,UnicodeDammit
 import string
 import time
