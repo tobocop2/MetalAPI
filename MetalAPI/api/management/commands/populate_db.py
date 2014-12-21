@@ -33,6 +33,28 @@ class Command(BaseCommand):
                     location=location, genre=genre, description=description)
             b.save()
 
+            # Create foreign key relationships for this band's albums
+            add_releases(band)
+
+    def add_releases(self, band):
+        for release in band['detailed_discography']:
+            # Removing 'parsed' key to account for Tobias' horribly architected data.
+            release.pop('parsed', None)
+
+            name = release.keys()[0]
+            fields = {
+                'band': Band.objects.filter(ma_id=band['ma_id']),
+                'name': name,
+                'notes': release[name]['album_notes'],
+                'length': release[name]['length'],
+                'release_id': release[name]['release_id'],
+                'release_type': release[name]['type'],
+                'release_year': release[name]['year']
+            }
+
+            r = Release(**fields)
+            r.save()
+
     #def add_release(self):
 
     def handle(self, *args, **options):
