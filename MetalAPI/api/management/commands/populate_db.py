@@ -57,7 +57,7 @@ class Command(BaseCommand):
             self.add_songs(release, r.release_id)
 
     def add_songs(self, release, release_id):
-        for song in release['songs']:
+        for song in release[release.keys()[0]]['songs']:
             s = Song(
                 release=Release.objects.get(release_id=release_id),
                 track_number=song['number'],
@@ -67,6 +67,23 @@ class Command(BaseCommand):
             )
 
             s.save()
+
+    def add_release_lineup(self, release, release_id):
+        # Create the foreign key release lineup object
+        l = ReleaseLineup(
+            release=Release.objects.get(release_id=release_id),
+        )
+        l.save()
+
+        for musician in release[release.keys()[0]]['album_lineup']:
+            m = ReleaseMusician(
+                lineup=l,
+                name=musician.keys()[0],
+                role=musician[musicians.keys()[0]]
+            )
+
+            m.save()
+
 
     def handle(self, *args, **options):
         self.add_bands()
