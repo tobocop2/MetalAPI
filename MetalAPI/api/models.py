@@ -20,9 +20,10 @@ class Release(models.Model):
     name = models.CharField(max_length=200)
     notes = models.TextField()
     length = models.CharField(max_length=200)
-    release_id = models.IntegerField()
+    release_id = models.BigIntegerField()
     release_type = models.CharField(max_length=200)
     release_year = models.IntegerField()
+    #release_category = models.CharField(max_length=200)
 
 class BandLineup(models.Model):
     # Enumerable choices for lineup type.

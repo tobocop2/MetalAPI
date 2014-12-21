@@ -1,11 +1,12 @@
 from django.core.management.base import BaseCommand
 from api.models import Band, Release, BandLineup, ReleaseLineup, BandMusician,\
         ReleaseMusician, Song, SimilarArtists
+from django.core import management
 import json
 import os
 
-
-data = open('/home/tobias/Q_test.json') #loading letter Q for test insertion
+management.call_command('flush')
+data = open('/home/tobias/json/Q_test.json') #loading letter Q for test insertion
 json_data = json.load(data)
 
 class Command(BaseCommand):
@@ -34,7 +35,7 @@ class Command(BaseCommand):
             b.save()
 
             # Create foreign key relationships for this band's albums
-            add_releases(band)
+            self.add_releases(band)
 
     def add_releases(self, band):
         for release in band['detailed_discography']:
@@ -42,17 +43,16 @@ class Command(BaseCommand):
             release.pop('parsed', None)
 
             name = release.keys()[0]
-            fields = {
-                'band': Band.objects.filter(ma_id=band['ma_id']),
-                'name': name,
-                'notes': release[name]['album_notes'],
-                'length': release[name]['length'],
-                'release_id': release[name]['release_id'],
-                'release_type': release[name]['type'],
-                'release_year': release[name]['year']
-            }
+            r = Release(
+                band=Band.objects.get(ma_id=band['id']),
+                name=name,
+                notes=release[name]['album_notes'],
+                length=release[name]['length'],
+                release_id=release[name]['release_id'],
+                release_type=release[name]['type'],
+                release_year=release[name]['year']
+            )
 
-            r = Release(**fields)
             r.save()
 
     #def add_release(self):
