@@ -54,8 +54,19 @@ class Command(BaseCommand):
             )
 
             r.save()
+            self.add_songs(release, r.release_id)
 
-    #def add_release(self):
+    def add_songs(self, release, release_id):
+        for song in release['songs']:
+            s = Song(
+                release=Release.objects.get(release_id=release_id),
+                track_number=song['number'],
+                length=song['length'],
+                lyrics=song['lyrics'],
+                name=song.keys()[0]
+            )
+
+            s.save()
 
     def handle(self, *args, **options):
         self.add_bands()
