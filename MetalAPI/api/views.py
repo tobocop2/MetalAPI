@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from api.models import Band, Release, BandLineup, ReleaseLineup, BandMusician,\
         ReleaseMusician, Song, SimilarArtist
-from api.utils import convert_band_to_dict
+from api.utils import convert_band_to_dict, convert_release_to_dict
 import json
 
 def index(request):
