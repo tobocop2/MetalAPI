@@ -5,8 +5,7 @@ from django.core import management
 import json
 import os
 
-management.call_command('flush')
-data = open('/home/tobias/json/Q_test.json') #loading letter Q for test insertion
+data = open('/home/tobias/json/testy.json') #loading letter Q for test insertion
 json_data = json.load(data)
 
 class Command(BaseCommand):

@@ -17,7 +17,7 @@ class ma_spider(Spider):
 
     def start_requests(self):
         #letters = ['NBR']+list(string.uppercase)
-        letters = ['Q']
+        letters = ['Y']
         for letter in letters:
             #passing in the letter and the time into the url
             url = START_URL_FMT.format(letter,int(time.time()))

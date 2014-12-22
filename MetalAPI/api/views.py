@@ -88,11 +88,11 @@ def bands_by_genre(request, genre):
 
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
-def bands_similar_to(request, name):
-    original_band = Band.objects.filter(name__icontains=name)[0]
+def bands_similar_to(request, band_id):
+    original_band = Band.objects.get(ma_id=band_id)
     bands_list = []
     for similar_band in original_band.similarartist_set.all():
-        band = Band.objects.filter(ma_id=similar_band.ma_id)[0]
+        band = Band.objects.filter(ma_id=similar_band.ma_id).first()
         if band:
             band_dict = convert_band_to_dict(band)
             bands_list.append(band_dict)
