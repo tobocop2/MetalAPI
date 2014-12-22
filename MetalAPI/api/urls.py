@@ -14,5 +14,4 @@ urlpatterns = patterns('',
     url(r'^bands/label/(?P<anystring>.+)/$', views.bands_by_label, name='bands_by_label'),
     url(r'^bands/location/(?P<anystring>.+)/$', views.bands_by_location, name='bands_by_location'),
     url(r'^bands/genre/(?P<anystring>.+)/$', views.bands_by_genre, name='bands_by_genre'),
-    url(r'^(?P<question_id>\d+)/$', views.detail, name='detail'),
 )
