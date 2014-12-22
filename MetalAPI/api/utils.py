@@ -11,6 +11,16 @@ def convert_band_to_dict(band):
     band_data['years_active'] = band.years_active
     band_data['location'] = band.location
     band_data['description'] = band.description
+    band_data['similar_artists'] = []
+    for similar_artist in band.similarartist_set.all():
+        band_data['similar_artists'].append({
+            'id': similar_artist['ma_id'],
+            'name': similar_artist['name'],
+            'country': similar_artist['country'],
+            'genre': similar_artist['genre'],
+            'url': similar_artist['url']
+        })
+
     return band_data
 
 def convert_release_to_dict(release):
