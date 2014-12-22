@@ -55,14 +55,15 @@ class Command(BaseCommand):
 
             r.save()
             self.add_songs(release, r.release_id)
+            self.add_release_lineup(release, r.release_id)
 
     def add_songs(self, release, release_id):
         for song in release[release.keys()[0]]['songs']:
             s = Song(
                 release=Release.objects.get(release_id=release_id),
-                track_number=song['number'],
-                length=song['length'],
-                lyrics=song['lyrics'],
+                track_number=song[song.keys()[0]]['number'],
+                length=song[song.keys()[0]]['length'],
+                lyrics=song[song.keys()[0]]['lyrics'],
                 name=song.keys()[0]
             )
 
@@ -79,7 +80,7 @@ class Command(BaseCommand):
             m = ReleaseMusician(
                 lineup=l,
                 name=musician.keys()[0],
-                role=musician[musicians.keys()[0]]
+                role=musician[musician.keys()[0]]
             )
 
             m.save()
