@@ -16,4 +16,5 @@ urlpatterns = patterns('',
     url(r'^bands/genre/(?P<genre>.+)/$', views.bands_by_genre, name='bands_by_genre'),
     url(r'^releases/id/(?P<release_id>\d+)/$', views.releases_by_id, name='releases_by_id'),
     url(r'^releases/band_id/(?P<band_id>\d+)/$', views.releases_by_band_id, name='releases_by_band_id'),
+    url(r'^releases/name/(?P<name>.+)/$', views.releases_by_name, name='releases_by_name'),
 )
