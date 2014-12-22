@@ -1,6 +1,6 @@
 from scrapy.spider import Spider
 from scrapy.http import Request
-from xtr33m.items import band_item
+from scraper.items import band_item
 from bs4 import BeautifulSoup,UnicodeDammit
 import string
 import time
@@ -17,7 +17,7 @@ class ma_spider(Spider):
 
     def start_requests(self):
         #letters = ['NBR']+list(string.uppercase)
-        letters = ['Y']
+        letters = ['Z']
         for letter in letters:
             #passing in the letter and the time into the url
             url = START_URL_FMT.format(letter,int(time.time()))
