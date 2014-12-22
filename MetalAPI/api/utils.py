@@ -24,7 +24,15 @@ def convert_release_to_dict(release):
     release_data['release_id'] = release.release_id
     release_data['release_type'] = release.release_type
     release_data['release_year'] = release.release_year
-    return band_data
+    release_data['songs'] = []
+    for song in release.song_set.all():
+        release_data['songs'].append({
+            'name': song.name,
+            'track_number': song.track_number,
+            'length': song.length,
+            'lyrics': song.lyrics,
+        })
+    return release_data
 
 def convert_band_lineup_to_dict(release):
     band_lineup_data = {}
