@@ -154,14 +154,19 @@ class ma_spider(Spider):
         soup = BeautifulSoup(response.body)
         similar_artist_list = [child.text.encode('utf-8') for child in soup.find_all('td') if not child.has_attr('colspan') and not child.find_all('span')]
         #may want to do this differently
+        urls = [child['href'] for child in soup.select('td a') if '#' not in child['href']]
         bands = similar_artist_list[0:len(similar_artist_list):3]
         countries = similar_artist_list[1:len(similar_artist_list):3]
         genres = similar_artist_list[2:len(similar_artist_list):3]
-        for band,country,genre in zip(bands,countries,genres):
+        for band,country,genre,url  in zip(bands,countries,genres,urls):
             if not item['similar_artists']:
-                item['similar_artists'] = [{band: [{'country': country},{'genre': genre}]}]
+                item['similar_artists'] = [
+                    {band: [{'country': country},{'genre': genre},{'url': url}]}
+                ]
             else:
-                item['similar_artists'].append({band: [{'country': country},{'genre': genre}]})
+                item['similar_artists'].append(
+                    {band: [{'country': country},{'genre': genre},{'url': url}]}
+                )
         related_link_url = 'http://www.metal-archives.com/link/ajax-list/type/band/id/%s' % item['id']
         yield Request(related_link_url,callback=self.parse_related_links,meta={'item':item})
 
