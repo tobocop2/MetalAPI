@@ -66,3 +66,13 @@ This is extremely useful for finding relationships between bands.
 
 
 ### Releases
+
+#### Release ID
+URL: `/api/releases/id/<release ide>`
+Retrieves all albums/releases corresponding to the Metal Archives ID of `release_id`.
+#### Band ID
+URL: `/api/releases/band_id/<band ide>`
+Retrieves all albums/releases released by the band corresponding to `band_id`.
+#### name
+URL: `/api/releases/name/<release name>`
+Retrieves all albums/releases whose name contains the string given in the route as `release_name`.
