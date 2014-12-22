@@ -30,10 +30,12 @@ class BandLineup(models.Model):
     CURRENT = 'CR'
     LIVE = 'LI'
     PAST = 'PA'
+    COMPLETE = 'CP'
     LINEUP_TYPES = (
         (CURRENT, 'current'),
         (LIVE, 'live'),
         (PAST, 'past'),
+        (COMPLETE, 'complete'),
     )
 
     band = models.ForeignKey(Band)
@@ -61,7 +63,7 @@ class Song(models.Model):
     length = models.CharField(max_length=200)
     lyrics = models.TextField()
 
-class SimilarArtists(models.Model):
+class SimilarArtist(models.Model):
     band = models.ForeignKey(Band)
     name = models.CharField(max_length=200)
     country = models.CharField(max_length=200)

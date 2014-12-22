@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from api.models import Band, Release, BandLineup, ReleaseLineup, BandMusician,\
-        ReleaseMusician, Song, SimilarArtists
+        ReleaseMusician, Song, SimilarArtist
 from django.core import management
 import json
 import os
@@ -37,6 +37,7 @@ class Command(BaseCommand):
             # Create foreign key relationships for this band's albums
             self.add_releases(band)
             self.add_band_lineups(band)
+            self.add_similar_artists(band)
 
     def add_releases(self, band):
         for release in band['detailed_discography']:
@@ -108,6 +109,21 @@ class Command(BaseCommand):
             )
 
             m.save()
+
+    def add_similar_artists(self, band):
+        for artist in band['similar_artists']:
+            fields = {
+                'name': artist.keys()[0],
+                'band': Band.objects.get(ma_id=band['id'])
+            }
+            for info in artist[fields['name']]:
+                if info.keys()[0] == 'country':
+                    fields['country'] = info['country']
+                if info.keys()[0] == 'genre':
+                    fields['genre'] = info['genre']
+
+            s = SimilarArtist(**fields)
+            s.save()
 
     def handle(self, *args, **options):
         self.add_bands()
