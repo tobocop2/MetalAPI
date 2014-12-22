@@ -121,6 +121,11 @@ class Command(BaseCommand):
                     fields['country'] = info['country']
                 if info.keys()[0] == 'genre':
                     fields['genre'] = info['genre']
+                if info.keys()[0] == 'url':
+                    fields['url'] = info['url']
+                    ma_id = info['url'].split('/')[-1]
+                    fields['ma_id'] = ma_id
+                    #fields['similar_band'] = Band.objects.get(ma_id=ma_id)
 
             s = SimilarArtist(**fields)
             s.save()

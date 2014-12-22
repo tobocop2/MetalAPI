@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Band(models.Model):
     ma_id = models.BigIntegerField()
     name = models.CharField(max_length=200)
@@ -65,6 +64,9 @@ class Song(models.Model):
 
 class SimilarArtist(models.Model):
     band = models.ForeignKey(Band)
+    #similar_band = models.ForeignKey(Band, related_name="similar_band")
     name = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
     genre = models.CharField(max_length=200)
+    url = models.CharField(max_length=200)
+    ma_id = models.BigIntegerField()
