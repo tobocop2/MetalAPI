@@ -87,3 +87,20 @@ def bands_by_genre(request, genre):
         bands_list.append(convert_band_to_dict(band))
 
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
+
+def releases_by_id(request, release_id):
+    releases = Release.objects.filter(release_id=release_id)
+    releases_list = []
+    for release in releases:
+        releases_list.append(convert_release_to_dict(release))
+
+    return HttpResponse(json.dumps(releases_list), content_type="application/json")
+
+def releases_by_band_id(request, band_id):
+    band = Band.objects.filter(ma_id=band_id)
+    releases = band.release_set.all()
+    releases_list = []
+    for release in releases:
+        releases_list.append(convert_release_to_dict(release))
+
+    return HttpResponse(json.dumps(releases_list), content_type="application/json")
