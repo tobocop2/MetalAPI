@@ -29,6 +29,40 @@ This API allows you to have access to all of the data from the "Encyclopaedia Me
 
 ### Bands
 
-#### 
+#### All
+URL: `/api/bands/all`
+Retrieves all bands from the Metal Archives currently in our database.
+#### ID
+URL: `/api/bands/id/<band_id>`
+Retrieves the band whose Metal Archives ID corresponds to `band_id`.
+#### Name
+URL: `/api/bands/name/<band_name>`
+Retrieves all bands whose name contains the string given in the route as `band_name`.
+#### Country
+URL: `/api/bands/country/<country>`
+Retrieves all bands from `country`.
+#### Status
+URL: `/api/bands/status/<status>`
+Retrieves all bands whose current activity status is `status`.
+#### Lyrical Themes
+URL: `/api/bands/lyrical_themes/<theme>`
+Retrieves all bands whose lyrical themes contain the string given in the route as `theme`.
+#### Formation Year
+URL: `/api/bands/formation_year/<year>`
+Retrieves all bands who were formed in `year`.
+#### Label
+URL: `/api/bands/label/<current_label>`
+Retrieves all bands who are currently signed to `current_label`.
+#### Location
+URL: `/api/bands/location/<location>`
+Retrieves all bands from `location`.
+#### Genre
+URL: `/api/bands/genre/<genre>`
+Retrieves all bands have a genre of `genre`.
+#### Similar To
+URL: `/api/bands/similarto/<band_name>`
+Retrieves all bands whose similar artists contain the band, `band_name`.
+This is extremely useful for finding relationships between bands.
+
 
 ### Releases
