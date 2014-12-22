@@ -97,7 +97,7 @@ def releases_by_id(request, release_id):
     return HttpResponse(json.dumps(releases_list), content_type="application/json")
 
 def releases_by_band_id(request, band_id):
-    band = Band.objects.filter(ma_id=band_id)
+    band = Band.objects.get(ma_id=band_id)
     releases = band.release_set.all()
     releases_list = []
     for release in releases:
