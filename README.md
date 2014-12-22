@@ -29,6 +29,11 @@ This API allows you to have access to all of the data from the "Encyclopaedia Me
 
 ### Bands
 
+These endpoints all allow access to the bands in our database that we scraped from the Metal Archives.
+You can use each route as a different or more convenient method of querying all of our bands depending on your interests.
+
+The base route for all band endpoints is `/api/bands/`
+
 #### All
 URL: `/api/bands/all`
 Retrieves all bands from the Metal Archives currently in our database.
@@ -67,12 +72,18 @@ This is extremely useful for finding relationships between bands.
 
 ### Releases
 
+These endpoints all allow access to the releases(albums) in our database that we scraped from the Metal Archives.
+You can use each route as a different or more convenient method of querying all of our releases depending on your interests.
+
+The base route for all release endpoints is `/api/releases/`
+
 #### Release ID
 URL: `/api/releases/id/<release ide>`
 Retrieves all albums/releases corresponding to the Metal Archives ID of `release_id`.
 #### Band ID
 URL: `/api/releases/band_id/<band ide>`
 Retrieves all albums/releases released by the band corresponding to `band_id`.
+This goes hand in hand with the band endpoints. We decided to separate them so the bands JSON was less nested.
 #### name
 URL: `/api/releases/name/<release name>`
 Retrieves all albums/releases whose name contains the string given in the route as `release_name`.
