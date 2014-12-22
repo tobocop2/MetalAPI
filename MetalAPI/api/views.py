@@ -25,7 +25,7 @@ def bands_by_id(request, band_id):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_by_name(request, name):
-    bands = Band.objects.filter(name=name)
+    bands = Band.objects.filter(name__icontains=name)
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
@@ -33,7 +33,7 @@ def bands_by_name(request, name):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_by_country(request, country):
-    bands = Band.objects.filter(country=country)
+    bands = Band.objects.filter(country__iexact=country)
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
@@ -41,7 +41,7 @@ def bands_by_country(request, country):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_by_status(request, status):
-    bands = Band.objects.filter(status=status)
+    bands = Band.objects.filter(status__iexact=status)
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
@@ -49,7 +49,7 @@ def bands_by_status(request, status):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_by_lyrical_themes(request, lyrical_themes):
-    bands = Band.objects.filter(lyrical_themes=lyrical_themes)
+    bands = Band.objects.filter(lyrical_themes__icontains=lyrical_themes)
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
@@ -65,7 +65,7 @@ def bands_by_year(request, year):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_by_label(request, label):
-    bands = Band.objects.filter(current_label=label)
+    bands = Band.objects.filter(current_label__icontains=label)
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
@@ -73,7 +73,7 @@ def bands_by_label(request, label):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_by_location(request, location):
-    bands = Band.objects.filter(location=location)
+    bands = Band.objects.filter(location__icontains=location)
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
@@ -81,7 +81,7 @@ def bands_by_location(request, location):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_by_genre(request, genre):
-    bands = Band.objects.filter(genre=genre)
+    bands = Band.objects.filter(genre__icontains=genre)
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
