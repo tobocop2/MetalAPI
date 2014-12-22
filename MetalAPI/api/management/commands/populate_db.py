@@ -36,6 +36,7 @@ class Command(BaseCommand):
 
             # Create foreign key relationships for this band's albums
             self.add_releases(band)
+            self.add_band_lineups(band)
 
     def add_releases(self, band):
         for release in band['detailed_discography']:
@@ -85,6 +86,28 @@ class Command(BaseCommand):
 
             m.save()
 
+    def add_band_lineups(self, band):
+        self.add_band_lineup(band, band['lineup']['complete_lineup'], BandLineup.COMPLETE)
+        self.add_band_lineup(band, band['lineup']['current_lineup'], BandLineup.CURRENT)
+        self.add_band_lineup(band, band['lineup']['live_lineup'], BandLineup.LIVE)
+        self.add_band_lineup(band, band['lineup']['past_lineup'], BandLineup.PAST)
+
+    def add_band_lineup(self, band, lineup, lineup_type):
+        l = BandLineup(
+            band=Band.objects.get(ma_id = band['id']),
+            lineup_type=lineup_type
+        )
+
+        l.save()
+
+        for musician in lineup:
+            m = BandMusician(
+                lineup=l,
+                name=musician.keys()[0],
+                role=musician[musician.keys()[0]]
+            )
+
+            m.save()
 
     def handle(self, *args, **options):
         self.add_bands()
