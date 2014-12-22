@@ -5,7 +5,7 @@ from api import views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^bands/all', views.all_bands, name='all_bands'),
-    url(r'^bands/id/(?P<ma_id>\d+)/$', views.bands_by_id, name='bands_by_id'),
+    url(r'^bands/id/(?P<band_id>\d+)/$', views.bands_by_id, name='bands_by_id'),
     url(r'^bands/name/(?P<name>.+)/$', views.bands_by_name, name='bands_by_name'),
     url(r'^bands/country/(?P<country>.+)/$', views.bands_by_country, name='bands_by_country'),
     url(r'^bands/status/(?P<status>.+)/$', views.bands_by_status, name='bands_by_status'),
