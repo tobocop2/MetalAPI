@@ -104,3 +104,11 @@ def releases_by_band_id(request, band_id):
         releases_list.append(convert_release_to_dict(release))
 
     return HttpResponse(json.dumps(releases_list), content_type="application/json")
+
+def releases_by_name(request, name):
+    releases = Release.objects.filter(name=name)
+    releases_list = []
+    for release in releases:
+        releases_list.append(convert_release_to_dict(release))
+
+    return HttpResponse(json.dumps(releases_list), content_type="application/json")
