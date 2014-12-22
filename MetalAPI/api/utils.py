@@ -14,11 +14,11 @@ def convert_band_to_dict(band):
     band_data['similar_artists'] = []
     for similar_artist in band.similarartist_set.all():
         band_data['similar_artists'].append({
-            'id': similar_artist['ma_id'],
-            'name': similar_artist['name'],
-            'country': similar_artist['country'],
-            'genre': similar_artist['genre'],
-            'url': similar_artist['url']
+            'id': similar_artist.ma_id,
+            'name': similar_artist.name,
+            'country': similar_artist.country,
+            'genre': similar_artist.genre,
+            'url': similar_artist.url
         })
 
     return band_data

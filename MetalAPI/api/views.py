@@ -89,9 +89,13 @@ def bands_by_genre(request, genre):
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
 def bands_similar_to(request, name):
-    band = Band.objects.get(name=name)
-    bands_list = [convert_band_to_dict(similar_band) \
-            for similar_band in band.similarartist_set.all()]
+    original_band = Band.objects.filter(name__icontains=name)[0]
+    bands_list = []
+    for similar_band in original_band.similarartist_set.all():
+        band = Band.objects.filter(ma_id=similar_band.ma_id)[0]
+        if band:
+            band_dict = convert_band_to_dict(band)
+            bands_list.append(band_dict)
 
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
@@ -113,7 +117,7 @@ def releases_by_band_id(request, band_id):
     return HttpResponse(json.dumps(releases_list), content_type="application/json")
 
 def releases_by_name(request, name):
-    releases = Release.objects.filter(name=name)
+    releases = Release.objects.filter(name__icontains=name)
     releases_list = []
     for release in releases:
         releases_list.append(convert_release_to_dict(release))

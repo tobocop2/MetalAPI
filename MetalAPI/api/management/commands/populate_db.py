@@ -39,6 +39,10 @@ class Command(BaseCommand):
             self.add_band_lineups(band)
             self.add_similar_artists(band)
 
+    def add_related_links(self,band):
+        for link_type in band['related_links']:
+            gt
+
     def add_releases(self, band):
         for release in band['detailed_discography']:
             # Removing 'parsed' key to account for Tobias' horribly architected data.
