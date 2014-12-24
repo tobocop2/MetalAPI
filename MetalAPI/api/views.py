@@ -123,3 +123,25 @@ def releases_by_name(request, name):
         releases_list.append(convert_release_to_dict(release))
 
     return HttpResponse(json.dumps(releases_list), content_type="application/json")
+
+def lineups_by_band(request, band_id):
+    band = Band.objects.get(ma_id=band_id)
+    lineups_data = {}
+    lineups_data['band'] = band.name
+    lineups_data['band_id'] = band.ma_id
+
+    # Dict pairing model enums with their user friendly representations.
+    lineup_types = {}
+    for lineup_type in BandLineup.LINEUP_TYPES:
+        lineup_types[lineup_type[0]] = lineup_type[1]
+        lineups_data[lineup_type[1]] = []
+
+    # Iterate through each lineup for the band.
+    for lineup in band.bandlineup_set.all():
+        lineup_type = lineup_types[lineup.lineup_type]
+        lineups_data[lineup_type].append(convert_band_lineup_to_dict(lineup))
+
+    return HttpResponse(json.dumps(lineups_data), content_type="application/json")
+
+def lineups_by_release(request, release_id):
+    return HttpResponse(json.dumps({}), content_type="application/json")

@@ -44,12 +44,8 @@ def convert_release_to_dict(release):
         })
     return release_data
 
-def convert_band_lineup_to_dict(lineup):
+def convert_musician_set_to_dict(lineup):
     lineup_data = {}
-    lineup_data['type'] = lineup.lineup_type
-    lineup_data['band'] = lineup.band.name
-    lineup_data['band_id'] = lineup.band.ma_id
-    lineup_data['musicians'] = []
     for musician in lineup.bandmusician_set.all():
         lineup_data['musicians'].append({
             'name': musician.name,

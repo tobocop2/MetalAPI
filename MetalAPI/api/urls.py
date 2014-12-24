@@ -18,4 +18,6 @@ urlpatterns = patterns('',
     url(r'^releases/id/(?P<release_id>\d+)/$', views.releases_by_id, name='releases_by_id'),
     url(r'^releases/band_id/(?P<band_id>\d+)/$', views.releases_by_band_id, name='releases_by_band_id'),
     url(r'^releases/name/(?P<name>.+)/$', views.releases_by_name, name='releases_by_name'),
+    url(r'^lineups/band/(?P<band_id>.+)/$', views.lineups_by_band, name='lineups_by_band'),
+    url(r'^lineups/release/(?P<release_id>.+)/$', views.lineups_by_release, name='lineups_by_release'),
 )
