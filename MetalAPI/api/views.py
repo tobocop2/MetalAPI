@@ -140,9 +140,6 @@ def lineups_by_band(request, band_id):
     # Iterate through each lineup for the band.
     for lineup in band.bandlineup_set.all():
         lineup_type = lineup_types[lineup.lineup_type]
-        lineups_data[lineup_type].append(convert_musician_set_to_dict(lineup))
+        lineups_data[lineup_type].append(convert_musician_set_to_dict(lineup, 'band'))
 
     return HttpResponse(json.dumps(lineups_data), content_type="application/json")
-
-def lineups_by_release(request, release_id):
-    return HttpResponse(json.dumps({}), content_type="application/json")

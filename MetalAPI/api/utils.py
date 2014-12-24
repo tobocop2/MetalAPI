@@ -42,6 +42,15 @@ def convert_release_to_dict(release):
             'length': song.length,
             'lyrics': song.lyrics,
         })
+
+    release-data['lineup']
+    # Releases only have one lineup? We should change our models.
+    for lineup in release.releaselineup_set.all():
+        for musician in lineup.releasemusician_set.all():
+            release_data['lineup'].append({
+                'name': musician.name,
+                'role': musician.role
+            })
     return release_data
 
 def convert_musician_set_to_dict(lineup):
@@ -53,17 +62,3 @@ def convert_musician_set_to_dict(lineup):
             'role': musician.role
         })
     return lineup_data
-
-def convert_release_lineup_to_dict(lineup):
-    lineup_data = {}
-    lineup_data['type'] = lineup.lineup_type
-    lineup_data['band'] = lineup.release.band.name
-    lineup_data['release'] = lineup.release.name
-    lineup_data['release_id'] = lineup.release.ma_id
-    lineup_data['musicians'] = []
-    for musician in lineup.releasemusician_set.all():
-        lineup_data['musicians'].append({
-            'name': musician.name,
-            'role': musician.role
-        })
-    return band_lineup_data
