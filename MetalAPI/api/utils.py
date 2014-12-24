@@ -43,7 +43,7 @@ def convert_release_to_dict(release):
             'lyrics': song.lyrics,
         })
 
-    release-data['lineup']
+    release_data['lineup'] = []
     # Releases only have one lineup? We should change our models.
     for lineup in release.releaselineup_set.all():
         for musician in lineup.releasemusician_set.all():
