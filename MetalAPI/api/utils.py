@@ -46,12 +46,13 @@ def convert_release_to_dict(release):
 
 def convert_musician_set_to_dict(lineup):
     lineup_data = {}
+    lineup_data['musicians'] = []
     for musician in lineup.bandmusician_set.all():
         lineup_data['musicians'].append({
             'name': musician.name,
             'role': musician.role
         })
-    return band_lineup_data
+    return lineup_data
 
 def convert_release_lineup_to_dict(lineup):
     lineup_data = {}
