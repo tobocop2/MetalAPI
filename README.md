@@ -14,16 +14,17 @@ This API allows you to have access to all of the data from the "Encyclopaedia Me
         - [Name](#name)
         - [Country](#country)
         - [Status](#status)
-        - [Lyrical Themes](#lyrical themes)
-        - [Formation Year](#formation year)
+        - [Lyrical Themes](#lyrical-themes)
+        - [Formation Year](#formation-year)
         - [Label](#label)
-        - [Location](#Location)
-        - [Genre](#Genre)
-        - [Similar to](#similar to)
+        - [Location](#location)
+        - [Genre](#genre)
+        - [Similar to](#similar-to)
     - [Releases(albums)](#releases)
-        - [Band ID](#band id)
-        - [Release ID](#release id)
-        - [Name](#name)
+        - [Band ID](#band-id)
+        - [Release ID](#release-id)
+        - [Name](#release-name)
+    - [Lineups](#lineups)
 
 ## Endpoints
 
@@ -84,6 +85,12 @@ Retrieves all albums/releases corresponding to the Metal Archives ID of `release
 URL: `/api/releases/band_id/<band ide>`
 Retrieves all albums/releases released by the band corresponding to `band_id`.
 This goes hand in hand with the band endpoints. We decided to separate them so the bands JSON was less nested.
-#### name
+#### Release name
 URL: `/api/releases/name/<release name>`
 Retrieves all albums/releases whose name contains the string given in the route as `release_name`.
+
+### Lineups
+
+URL: `/api/lineups/<band_id>`
+
+This allows you to retrieve every distinct lineup for a given band, including live, current and complete lineups(everyone who has ever been in the band). To find out which musicians played on a given release, see the JSON returned from any release endpoint.
