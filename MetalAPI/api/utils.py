@@ -20,7 +20,13 @@ def convert_band_to_dict(band):
             'genre': similar_artist.genre,
             'url': similar_artist.url
         })
-
+    band_data['related_links'] = []
+    for related_link in band.relatedlinks_set.all():
+        band_data['related_links'].append({
+            'category': related_link.category,
+            'type': related_link.link_type,
+            'url': related_link.url
+        })
     return band_data
 
 def convert_release_to_dict(release):
