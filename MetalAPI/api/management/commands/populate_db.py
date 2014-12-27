@@ -143,8 +143,8 @@ class Command(BaseCommand):
                     fields['link_type'] = link_type
                     fields['url'] = url
                     fields['category'] = link_category
-                rl = RelatedLinks(**fields)
-                rl.save()
+                    rl = RelatedLinks(**fields)
+                    rl.save()
 
     def handle(self, *args, **options):
         self.add_bands()
