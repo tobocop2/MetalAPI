@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from api.models import Band, Release, BandLineup, ReleaseLineup, BandMusician,\
-        ReleaseMusician, Song, SimilarArtist
+        ReleaseMusician, Song, SimilarArtist, RelatedLinks
 from django.core import management
 import json
 import os
@@ -37,10 +37,7 @@ class Command(BaseCommand):
             self.add_releases(band)
             self.add_band_lineups(band)
             self.add_similar_artists(band)
-
-    def add_related_links(self,band):
-        for link_type in band['related_links']:
-            gt
+            self.add_related_links(band)
 
     def add_releases(self, band):
         for release in band['detailed_discography']:
@@ -132,6 +129,22 @@ class Command(BaseCommand):
 
             s = SimilarArtist(**fields)
             s.save()
+
+    def add_related_links(self, band):
+        #link_type is official,tabs etc
+        fields = {
+            'band': Band.objects.get(ma_id=band['id']),
+        }
+        for link_category in band['related_links']:
+            if len(band['related_links'][link_category]) > 0:
+                for link in band['related_links'][link_category]:
+                    link_type = link.keys()[0]
+                    url = link[link_type]
+                    fields['link_type'] = link_type
+                    fields['url'] = url
+                    fields['category'] = link_category
+                rl = RelatedLinks(**fields)
+                rl.save()
 
     def handle(self, *args, **options):
         self.add_bands()
