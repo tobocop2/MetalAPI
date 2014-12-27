@@ -9,13 +9,17 @@ import json
 def index(request):
     return HttpResponse("Hello, world.")
 
-def all_bands(request):
+def all_band_ids(request):
     bands = Band.objects.all()
-    bands_list = []
+    band_ids = []
     for band in bands:
-        bands_list.append(convert_band_to_dict(band))
+        band_ids.append({
+            'id': band.ma_id,
+            'band': band.name,
+            'url': band.url
+        })
 
-    return HttpResponse(json.dumps(bands_list), content_type="application/json")
+    return HttpResponse(json.dumps(band_ids), content_type="application/json")
 
 def bands_by_id(request, band_id):
     bands = Band.objects.filter(ma_id=band_id)
