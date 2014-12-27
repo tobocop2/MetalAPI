@@ -69,3 +69,9 @@ class SimilarArtist(models.Model):
     genre = models.CharField(max_length=200)
     url = models.CharField(max_length=200)
     ma_id = models.BigIntegerField()
+
+class RelatedLinks(models.Model):
+    band = models.ForeignKey(Band)
+    category = models.CharField(max_length=200)
+    link_type = models.CharField(max_length=200)
+    url = models.CharField(max_length=200)
