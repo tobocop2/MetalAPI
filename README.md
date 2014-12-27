@@ -37,7 +37,7 @@ The base route for all band endpoints is `/api/bands/`
 
 #### All
 URL: `/api/bands/all`
-Retrieves all bands from the Metal Archives currently in our database.
+Retrieves all band ids, urls, and names from the Metal Archives currently in our database.
 #### ID
 URL: `/api/bands/id/<band_id>`
 Retrieves the band whose Metal Archives ID corresponds to `band_id`.
