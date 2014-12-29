@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from api.models import Band, Release, BandLineup, ReleaseLineup, BandMusician,\
-        ReleaseMusician, Song, SimilarArtist
+        ReleaseMusician, Song, SimilarArtist,RelatedLinks
 from api.utils import convert_band_to_dict, convert_release_to_dict, \
         convert_musician_set_to_dict
 import json
@@ -90,6 +90,16 @@ def bands_by_genre(request, genre):
     bands_list = []
     for band in bands:
         bands_list.append(convert_band_to_dict(band))
+
+    return HttpResponse(json.dumps(bands_list), content_type="application/json")
+
+def bands_by_musician(request, musician):
+    bands_list = []
+    for band in Band.objects.all():
+        for lineup in band.bandlineup_set.all():
+            for musician in lineup.bandmusician_set.filter(name__icontains=musician):
+                musicians_band = musician.lineup.band
+                bands_list.append(convert_band_to_dict(musicians_band))
 
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
