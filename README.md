@@ -69,7 +69,9 @@ Retrieves all bands have a genre of `genre`.
 URL: `/api/bands/similarto/<band_name>`
 Retrieves all bands whose similar artists contain the band, `band_name`.
 This is extremely useful for finding relationships between bands.
-
+#### Musicians
+URL: `/api/bands/musicians/<musician_name>`
+Retrieves all bands that the given musician belongs to.
 
 ### Releases
 
@@ -79,10 +81,10 @@ You can use each route as a different or more convenient method of querying all 
 The base route for all release endpoints is `/api/releases/`
 
 #### Release ID
-URL: `/api/releases/id/<release ide>`
+URL: `/api/releases/id/<release id>`
 Retrieves all albums/releases corresponding to the Metal Archives ID of `release_id`.
 #### Band ID
-URL: `/api/releases/band_id/<band ide>`
+URL: `/api/releases/band_id/<band id>`
 Retrieves all albums/releases released by the band corresponding to `band_id`.
 This goes hand in hand with the band endpoints. We decided to separate them so the bands JSON was less nested.
 #### Release name
