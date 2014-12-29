@@ -7,7 +7,8 @@ from api.utils import convert_band_to_dict, convert_release_to_dict, \
 import json
 
 def index(request):
-    return HttpResponse("Hello, world.")
+    #return HttpResponse("Hello, world.")
+    return render(request, "index.html")
 
 def all_band_ids(request):
     bands = Band.objects.all()
