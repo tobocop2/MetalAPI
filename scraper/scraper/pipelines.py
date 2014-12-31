@@ -7,7 +7,7 @@
 
 from scrapy.exceptions import DropItem
 
-class Xtr33MPipeline(object):
+class ScraperPipeline(object):
     def process_item(self, item, spider):
         return item
 
