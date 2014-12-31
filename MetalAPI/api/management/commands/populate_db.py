@@ -6,7 +6,8 @@ import json
 import os
 import glob
 
-path = "/home/tobias/chunks/*.json"
+#path = "/home/tobias/chunks/*.json"
+path = "/home/tobias/z_test/z_test.json"
 
 class Command(BaseCommand):
     #args = '<foo bar ...>'
@@ -65,7 +66,7 @@ class Command(BaseCommand):
     def add_songs(self, release, release_id):
         for song in release[release.keys()[0]]['songs']:
             s = Song(
-                release=Release.objects.get(release_id=release_id),
+                release=Release.objects.filter(release_id=release_id).first(),
                 track_number=song[song.keys()[0]]['number'],
                 length=song[song.keys()[0]]['length'],
                 lyrics=song[song.keys()[0]]['lyrics'],
@@ -77,7 +78,7 @@ class Command(BaseCommand):
     def add_release_lineup(self, release, release_id):
         # Create the foreign key release lineup object
         l = ReleaseLineup(
-            release=Release.objects.get(release_id=release_id),
+            release=Release.objects.filter(release_id=release_id).first(),
         )
         l.save()
 
