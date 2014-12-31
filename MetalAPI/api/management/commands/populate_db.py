@@ -4,40 +4,43 @@ from api.models import Band, Release, BandLineup, ReleaseLineup, BandMusician,\
 from django.core import management
 import json
 import os
+import glob
 
-data = open('/home/tobias/json/testy.json') #loading letter Q for test insertion
-json_data = json.load(data)
+path = "/home/tobias/chunks/*.json"
 
 class Command(BaseCommand):
     #args = '<foo bar ...>'
     #help = 'our help string comes here'
 
     def add_bands(self):
-        for band in json_data:
-            ma_id = band['id']
-            name = band['name']
-            url_name = name.replace(' ', '_')
-            url = 'http://www.metal-archives.com/bands/%s/%s' % (url_name, ma_id)
-            country = band['country']
-            status = band['status']
-            lyrical_themes = band['lyrical_themes']
-            formation_year = band['formation_year']
-            current_label = band['current_label']
-            years_active = band['years_active']
-            location = band['location']
-            genre = band['genre']
-            description = band['description']
-            b=Band(ma_id=ma_id, name=name, url=url, country=country, status=status,\
-                    lyrical_themes=lyrical_themes, formation_year=formation_year,\
-                    current_label=current_label, years_active=years_active,\
-                    location=location, genre=genre, description=description)
-            b.save()
+        for fname in glob.glob(path):
+            data = open(fname)
+            json_data = json.load(data)
+            for band in json_data:
+                ma_id = band['id']
+                name = band['name']
+                url_name = name.replace(' ', '_')
+                url = 'http://www.metal-archives.com/bands/%s/%s' % (url_name, ma_id)
+                country = band['country']
+                status = band['status']
+                lyrical_themes = band['lyrical_themes']
+                formation_year = band['formation_year']
+                current_label = band['current_label']
+                years_active = band['years_active']
+                location = band['location']
+                genre = band['genre']
+                description = band['description']
+                b=Band(ma_id=ma_id, name=name, url=url, country=country, status=status,\
+                        lyrical_themes=lyrical_themes, formation_year=formation_year,\
+                        current_label=current_label, years_active=years_active,\
+                        location=location, genre=genre, description=description)
+                b.save()
 
-            # Create foreign key relationships for this band's albums
-            self.add_releases(band)
-            self.add_band_lineups(band)
-            self.add_similar_artists(band)
-            self.add_related_links(band)
+                # Create foreign key relationships for this band's albums
+                self.add_releases(band)
+                self.add_band_lineups(band)
+                self.add_similar_artists(band)
+                self.add_related_links(band)
 
     def add_releases(self, band):
         for release in band['detailed_discography']:
