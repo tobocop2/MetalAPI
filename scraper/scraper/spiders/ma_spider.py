@@ -16,7 +16,8 @@ class ma_spider(Spider):
     allowed_domains = ["www.metal-archives.com"]
 
     def start_requests(self):
-        letters = ['NBR']+list(string.uppercase)
+        #letters = ['NBR']+list(string.uppercase)
+        letters = ['Z']
         for letter in letters:
             #passing in the letter and the time into the url
             url = START_URL_FMT.format(letter,int(time.time()))
