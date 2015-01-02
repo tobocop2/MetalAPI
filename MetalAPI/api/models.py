@@ -16,7 +16,8 @@ class Band(models.Model):
 
 class Release(models.Model):
     band = models.ForeignKey(Band)
-    name = models.CharField(max_length=200)
+    #name = models.CharField(max_length=200)
+    name = models.TextField()
     notes = models.TextField()
     length = models.CharField(max_length=200)
     release_id = models.BigIntegerField()
@@ -46,25 +47,29 @@ class ReleaseLineup(models.Model):
 # Make this generic later
 class BandMusician(models.Model):
     lineup = models.ForeignKey(BandLineup)
-    name = models.CharField(max_length=200)
+    #name = models.CharField(max_length=200)
+    name = models.TextField()
     role = models.CharField(max_length=200)
 
 # Make this generic later
 class ReleaseMusician(models.Model):
     lineup = models.ForeignKey(ReleaseLineup)
-    name = models.CharField(max_length=200)
+    #name = models.CharField(max_length=200)
+    name = models.TextField()
     role = models.CharField(max_length=200)
 
 class Song(models.Model):
     release = models.ForeignKey(Release)
     track_number = models.IntegerField()
-    name = models.CharField(max_length=200)
+    #name = models.CharField(max_length=200)
+    name = models.TextField()
     length = models.CharField(max_length=200)
     lyrics = models.TextField()
 
 class SimilarArtist(models.Model):
     band = models.ForeignKey(Band)
-    name = models.CharField(max_length=200)
+    #name = models.CharField(max_length=200)
+    name = models.TextField()
     country = models.CharField(max_length=200)
     genre = models.CharField(max_length=200)
     url = models.CharField(max_length=200)
