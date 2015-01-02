@@ -2,7 +2,7 @@ from django.db import models
 
 class Band(models.Model):
     ma_id = models.BigIntegerField()
-    name = models.CharField(max_length=200)
+    name = models.TextField()
     url = models.URLField()
     country = models.CharField(max_length=200)
     status = models.CharField(max_length=200)
