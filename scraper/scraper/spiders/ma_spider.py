@@ -1,6 +1,6 @@
 from scrapy.spider import Spider
 from scrapy.http import Request
-from xtr33m.items import band_item
+from scraper.items import band_item
 from bs4 import BeautifulSoup,UnicodeDammit
 import string
 import time
@@ -252,7 +252,7 @@ class ma_spider(Spider):
         soup = BeautifulSoup(response.body)
 
         release_info = [child.text.encode('utf-8').strip('\n\t') for child in soup.find_all(class_=['demo','album','single','other']) if not any(c == '\n' or c == '\t' for c in child.text.encode('utf-8').strip('\n\t')) and len(child.text.encode('utf-8').strip()) != 0]
-        release_urls = [child['href'] for child in soup.select('tbody td a') if '%' not in child.text.encode('utf-8') and len(child.text.encode('utf-8').strip()) != 0]
+        release_urls = [child['href'] for child in soup.select('tbody td a') if 'reviews' not in child['href'] and len(child.text.encode('utf-8').strip()) != 0]
         release_names = release_info[0:len(release_info):3]
         release_types = release_info[1:len(release_info):3]
         release_years = release_info[2:len(release_info):3]
