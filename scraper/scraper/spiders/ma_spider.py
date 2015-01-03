@@ -251,7 +251,7 @@ class ma_spider(Spider):
         #{all_releases: [{name: name}, {type: type}, {year: year}}]
         soup = BeautifulSoup(response.body)
 
-        release_info = [child.text.encode('utf-8').strip('\n\t') for child in soup.select('tbody td') if '%' not in child.text.encode('utf-8') and not any(c == '\n' or c == '\t' for c in child.text.encode('utf-8').strip('\n\t')) and len(child.text.encode('utf-8').strip()) != 0]
+        release_info = [child.text.encode('utf-8').strip('\n\t') for child in soup.find_all(class_=['demo','album','single','other']) if not any(c == '\n' or c == '\t' for c in child.text.encode('utf-8').strip('\n\t')) and len(child.text.encode('utf-8').strip()) != 0]
         release_urls = [child['href'] for child in soup.select('tbody td a') if '%' not in child.text.encode('utf-8') and len(child.text.encode('utf-8').strip()) != 0]
         release_names = release_info[0:len(release_info):3]
         release_types = release_info[1:len(release_info):3]
