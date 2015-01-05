@@ -49,14 +49,16 @@ class BandMusician(models.Model):
     lineup = models.ForeignKey(BandLineup)
     #name = models.CharField(max_length=200)
     name = models.TextField()
-    role = models.CharField(max_length=200)
+    #role = models.CharField(max_length=200)
+    role = models.TextField()
 
 # Make this generic later
 class ReleaseMusician(models.Model):
     lineup = models.ForeignKey(ReleaseLineup)
     #name = models.CharField(max_length=200)
     name = models.TextField()
-    role = models.CharField(max_length=200)
+    #role = models.CharField(max_length=200)
+    role = models.TextField()
 
 class Song(models.Model):
     release = models.ForeignKey(Release)

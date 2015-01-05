@@ -16,8 +16,8 @@ class ma_spider(Spider):
     allowed_domains = ["www.metal-archives.com"]
 
     def start_requests(self):
-        #letters = ['NBR']+list(string.uppercase)
-        letters = ['Z']
+        letters = ['NBR']+list(string.uppercase)
+        #letters = ['Z']
         for letter in letters:
             #passing in the letter and the time into the url
             url = START_URL_FMT.format(letter,int(time.time()))
@@ -251,7 +251,7 @@ class ma_spider(Spider):
         #{all_releases: [{name: name}, {type: type}, {year: year}}]
         soup = BeautifulSoup(response.body)
 
-        release_info = [child.text.encode('utf-8').strip('\n\t') for child in soup.find_all(class_=['demo','album','single','other']) if not any(c == '\n' or c == '\t' for c in child.text.encode('utf-8').strip('\n\t')) and len(child.text.encode('utf-8').strip()) != 0]
+        release_info = [child.text.encode('utf-8').strip('\n\t') for child in soup.find_all(class_=['demo','album','single','other']) if not any(c == '\n' or c == '\t' for c in child.text.encode('utf-8').strip('\n\t')) and len(child.text.encode('utf-8').strip()) >= 0]
         release_urls = [child['href'] for child in soup.select('tbody td a') if 'reviews' not in child['href'] and len(child.text.encode('utf-8').strip()) != 0]
         release_names = release_info[0:len(release_info):3]
         release_types = release_info[1:len(release_info):3]
