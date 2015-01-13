@@ -4,22 +4,24 @@ import os
 
 base_url = 'http://perelste.in:8001/api'
 
-def make_dir(dir_name):
+def make_dir(dir_name,unique_id):
+    dir_name = '%s - %s' % (dir_name.replace('/','\\').encode('ascii','ignore'), unique_id)
     try:
-        os.makedirs(dir_name.replace('/','\\')
+        #os.makedirs(dir_name)
+        os.makedirs(dir_name)
     except OSError:
         if not os.path.isdir(dir_name):
             raise
+    return dir_name
+
 
 def get_band_data(base_url):
     all_bands = requests.get('%s/bands/all' % base_url)
 
-    make_dir('Bands')
-    os.chdir('Bands')
+    os.chdir(make_dir('Bands',len(all_bands.json())))
     for band in all_bands.json():
         print 'Getting file for %s' % band['band']
-        make_dir(band['band'])
-        os.chdir(band['band'])
+        os.chdir(make_dir(band['band'],band['id']))
         get_bands_by_id(base_url,band['band'],band['id'])
         get_releases_by_id(base_url,band['id'])
         get_lineups_by_id(base_url,band['id'])
@@ -27,6 +29,7 @@ def get_band_data(base_url):
 
 def get_bands_by_id(base_url,band_name,band_id):
     band_by_id = requests.get('%s/bands/id/%s' % (base_url,str(band_id))).json()
+    band_name = band_name.replace('/','\\').encode('ascii','ignore')
     with open('%s_info.json' % band_name,'w') as json_file:
         json.dump(band_by_id,json_file)
 
