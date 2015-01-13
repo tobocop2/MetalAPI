@@ -6,7 +6,7 @@ base_url = 'http://perelste.in:8001/api'
 
 def make_dir(dir_name):
     try:
-        os.makedirs(dir_name)
+        os.makedirs(dir_name.replace('/','\\')
     except OSError:
         if not os.path.isdir(dir_name):
             raise
