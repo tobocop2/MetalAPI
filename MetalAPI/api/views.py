@@ -96,11 +96,11 @@ def bands_by_genre(request, genre):
 
 def bands_by_musician(request, musician):
     bands_list = []
-    for lineup in BandLineup.objects.all():
-        for musician in lineup.bandmusician_set.filter(name__icontains=musician):
-            musicians_band = musician.lineup.band
-            if musicians_band not in bands_list:
-                bands_list.append(convert_band_to_dict(musicians_band))
+    musicians = BandMusician.objects.get_queryset()
+    for musician in musicians.filter(name__icontains=musician):
+        musicians_band = musician.lineup.band
+        if musicians_band not in bands_list:
+            bands_list.append(convert_band_to_dict(musicians_band))
 
     return HttpResponse(json.dumps(bands_list), content_type="application/json")
 
