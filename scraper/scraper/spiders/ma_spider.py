@@ -60,14 +60,14 @@ class ma_spider(Spider):
 
         band_name = soup.select('.band_name')[0].text.encode('utf-8')
         band_id = response.url.split('/')[-1]
-        country = soup.select('# band_stats dd')[0].text.encode('utf-8')
-        location = soup.select('# band_stats dd')[1].text.encode('utf-8')
-        status = soup.select('# band_stats dd')[2].text.encode('utf-8')
-        formation = soup.select('# band_stats dd')[3].text.encode('utf-8')
-        genre = soup.select('# band_stats dd')[4].text.encode('utf-8')
-        lyrical_themes = soup.select('# band_stats dd')[5].text.encode('utf-8')
-        current_label = soup.select('# band_stats dd')[6].text.encode('utf-8')
-        years_active = soup.select('# band_stats dd')[7].text.encode('utf-8')
+        country = soup.select('#band_stats dd')[0].text.encode('utf-8')
+        location = soup.select('#band_stats dd')[1].text.encode('utf-8')
+        status = soup.select('#band_stats dd')[2].text.encode('utf-8')
+        formation = soup.select('#band_stats dd')[3].text.encode('utf-8')
+        genre = soup.select('#band_stats dd')[4].text.encode('utf-8')
+        lyrical_themes = soup.select('#band_stats dd')[5].text.encode('utf-8')
+        current_label = soup.select('#band_stats dd')[6].text.encode('utf-8')
+        years_active = soup.select('#band_stats dd')[7].text.encode('utf-8')
         years_active = ''.join([c for c in years_active if c not in '\n\t '])
         desc_comment = 'Max 400 characters. Open the rest in a dialogue box'
 
@@ -105,9 +105,9 @@ class ma_spider(Spider):
                 'band_tab_members_live'
             ]
         ) is not None:
-            lineup = soup.select('# band_tab_members_all .lineupRow td a')
+            lineup = soup.select('#band_tab_members_all .lineupRow td a')
             if len(lineup) > 0:
-                role_soup = soup.select('# band_tab_members_all .lineupRow td')
+                role_soup = soup.select('#band_tab_members_all .lineupRow td')
                 roles = role_soup[1:len(role_soup):2]
                 roles = [
                     ''.join(re.split('\t|\n', role.text))
@@ -123,10 +123,10 @@ class ma_spider(Spider):
                             {member.text.encode('utf-8'): role.encode('utf-8')}
                         ]
             # current linup
-            lineup = soup.select('# band_tab_members_current .lineupRow td a')
+            lineup = soup.select('#band_tab_members_current .lineupRow td a')
             if len(lineup) > 0:
                 role_soup = soup.select(
-                    '# band_tab_members_current .lineupRow td')
+                    '#band_tab_members_current .lineupRow td')
                 roles = role_soup[1:len(role_soup):2]
                 roles = [
                     ''.join(re.split('\t|\n', role.text))
@@ -142,10 +142,10 @@ class ma_spider(Spider):
                             {member.text.encode('utf-8'): role.encode('utf-8')}
                         )
             # past lineup
-            lineup = soup.select('# band_tab_members_past .lineupRow td a')
+            lineup = soup.select('#band_tab_members_past .lineupRow td a')
             if len(lineup) > 0:
                 role_soup = soup.select(
-                    '# band_tab_members_past .lineupRow td')
+                    '#band_tab_members_past .lineupRow td')
                 roles = role_soup[1:len(role_soup):2]
                 roles = [
                     ''.join(re.split('\t|\n', role.text))
@@ -161,10 +161,10 @@ class ma_spider(Spider):
                             {member.text.encode('utf-8'): role.encode('utf-8')}
                         )
             # live lineup
-            lineup = soup.select('# band_tab_members_live .lineupRow td a')
+            lineup = soup.select('#band_tab_members_live .lineupRow td a')
             if len(lineup) > 0:
                 role_soup = soup.select(
-                    '# band_tab_members_live .lineupRow td')
+                    '#band_tab_members_live .lineupRow td')
                 roles = role_soup[1:len(role_soup):2]
                 roles = [
                     ''.join(re.split('\t|\n', role.text))
@@ -226,7 +226,7 @@ class ma_spider(Spider):
         urls = [
             child['href']
             for child in soup.select('td a')
-            if '# ' not in child['href']
+            if '#' not in child['href']
         ]
         bands = similar_artist_list[0:len(similar_artist_list):3]
         countries = similar_artist_list[1:len(similar_artist_list):3]
@@ -280,19 +280,19 @@ class ma_spider(Spider):
             'Band_Label_Links': [],
             'Band_Tablatures': []
         }
-        for child in soup.select('# band_links_Official a'):
+        for child in soup.select('#band_links_Official a'):
             item['related_links']['Official_Band_Links'].append(
                 {child.text.encode('utf-8'): child['href']})
-        for child in soup.select('# band_links_Official_merchandise a'):
+        for child in soup.select('#band_links_Official_merchandise a'):
             item['related_links']['Official_Merchandise'].append(
                 {child.text.encode('utf-8'): child['href']})
-        for child in soup.select('# band_links_Unofficial a'):
+        for child in soup.select('#band_links_Unofficial a'):
             item['related_links']['Unofficial_Band_Links'].append(
                 {child.text.encode('utf-8'): child['href']})
-        for child in soup.select('# band_links_Labls a'):
+        for child in soup.select('#band_links_Labls a'):
             item['related_links']['Band_Label_Links'].append(
                 {child.text.encode('utf-8'): child['href']})
-        for child in soup.select('# band_links_Tablatures a'):
+        for child in soup.select('#band_links_Tablatures a'):
             item['related_links']['Band_Tablatures'].append(
                 {child.text.encode('utf-8'): child['href']})
         live_releases = ('http://www.metal-archives.com/band'
@@ -547,7 +547,7 @@ class ma_spider(Spider):
             release_length = duration[0].text.encode('utf-8')
         release['length'] = release_length
         print 'The release length..'+release['length']
-        band_members = soup.select('# album_members_lineup .lineupRow td a')
+        band_members = soup.select('#album_members_lineup .lineupRow td a')
         member_roles_temp = soup.select('.lineupRow td')
         member_roles = member_roles_temp[1:len(member_roles_temp):2]
         member_roles = [
@@ -557,7 +557,7 @@ class ma_spider(Spider):
         for member, role, in zip(band_members, member_roles):
             release['album_lineup'].append(
                 {member.text.encode('utf-8'): role.encode('utf-8')})
-        for notes in soup.select('# album_tabs_notes'):
+        for notes in soup.select('#album_tabs_notes'):
             notes = ''.join(c for c in notes.text if c not in '\n\r\t')
             release['album_notes'] = notes.encode('utf-8').strip()
 
