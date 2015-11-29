@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Band(models.Model):
-    similar_artists = models.ManyToManyField('self', through='SimilarArtist',
+    similar_artists = models.ManyToManyField('self', through='SimilarBand',
                                              symmetrical=False,
                                              related_name='similar_to')
     ma_id = models.BigIntegerField()
@@ -19,7 +19,7 @@ class Band(models.Model):
     description = models.TextField()
 
 
-class Similarband(models.Model):
+class SimilarBand(models.Model):
     from_band = models.ForeignKey(Band, related_name='from_bands')
     to_band = models.ForeignKey(Band, related_name='to_bands')
 
