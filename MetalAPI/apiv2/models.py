@@ -2,9 +2,9 @@ from django.db import models
 
 
 class Band(models.Model):
-    similar_artists = models.ManyToManyField('self', through='SimilarBand',
-                                             symmetrical=False,
-                                             related_name='similar_to')
+    similar_bands = models.ManyToManyField('self', through='SimilarBand',
+                                           symmetrical=False,
+                                           related_name='similar_to')
     ma_id = models.BigIntegerField()
     name = models.TextField()
     url = models.URLField()
@@ -42,10 +42,10 @@ class Lineup(models.Model):
 
 class Release(models.Model):
     lineup = models.ForeignKey(Lineup)
+    ma_release_id = models.BigIntegerField()
     name = models.TextField()
     notes = models.TextField()
     length = models.CharField(max_length=200)
-    release_id = models.BigIntegerField()
     release_type = models.CharField(max_length=200)
     release_year = models.IntegerField()
     release_category = models.CharField(max_length=200)
@@ -57,7 +57,7 @@ class Musician(models.Model):
     lineup = models.ManyToManyField(Lineup)
 
 
-class Song(models.Model):
+class Track(models.Model):
     release = models.ForeignKey(Release)
     track_number = models.IntegerField()
     name = models.TextField()
