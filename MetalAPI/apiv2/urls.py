@@ -7,7 +7,7 @@ router.register(r'bands', views.BandViewSet)
 router.register(r'lineups', views.LineupViewSet)
 router.register(r'releases', views.ReleaseViewSet)
 router.register(r'musicians', views.MusicianViewSet)
-router.register(r'songs', views.SongViewSet)
+router.register(r'tracks', views.TrackViewSet)
 router.register(r'relatedlinks', views.RelatedLinkViewSet)
 
 # Wire up our API using automatic URL routing.
