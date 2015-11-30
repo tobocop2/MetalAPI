@@ -36,8 +36,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
+    'rest_framework',
+    'apiv2'
+    # 'api',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'PAGE_SIZE': 10
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,35 +73,35 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        #'HOST': 'localhost',
-        'PORT': '5432',
+        # 'PASSWORD': os.environ.get('DB_PASSWORD'),
+        # 'HOST': 'localhost',
+        'PORT': os.environ.get('DB_PORT')
     }
 }
 
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-#        'LOCATION': 'cache_table',
-#        'OPTIONS': {
-#            'MAX_ENTRIES': 10000
-#        }
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'cache_table',
+#         'OPTIONS': {
+#             'MAX_ENTRIES': 10000
+#         }
 #
-#    }
-#}
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/var/tmp/metal_cache',
-    }
-}
-
-CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 86400
-CACHE_MIDDLEWARE_KEY_PREFIX = 'api'
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
+#     }
+# }
+# CACHES = {
+#      'default': {
+#          'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#          'LOCATION': '/var/tmp/metal_cache',
+#      }
+#  }
+#
+# CACHE_MIDDLEWARE_ALIAS = 'default'
+# CACHE_MIDDLEWARE_SECONDS = 86400
+# CACHE_MIDDLEWARE_KEY_PREFIX = 'api'
+#
+# # Internationalization
+# # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
