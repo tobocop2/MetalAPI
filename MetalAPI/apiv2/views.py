@@ -3,7 +3,7 @@ from .models import (
     Lineup,
     Release,
     Musician,
-    Song,
+    Track,
     RelatedLink
 )
 from .serializers import (
@@ -11,7 +11,7 @@ from .serializers import (
     LineupSerializer,
     ReleaseSerializer,
     MusicianSerializer,
-    SongSerializer,
+    TrackSerializer,
     RelatedLinkSerializer
 )
 from rest_framework import viewsets
@@ -25,7 +25,7 @@ class BandViewSet(viewsets.ModelViewSet):
     serializer_class = BandSerializer
 
 
-class LineupViewSet(viewsets.ModelViewSet):
+class LineupViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows lineups to be viewed or edited.
     """
@@ -33,7 +33,7 @@ class LineupViewSet(viewsets.ModelViewSet):
     serializer_class = LineupSerializer
 
 
-class ReleaseViewSet(viewsets.ModelViewSet):
+class ReleaseViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows releases to be viewed or edited.
     """
@@ -41,7 +41,7 @@ class ReleaseViewSet(viewsets.ModelViewSet):
     serializer_class = ReleaseSerializer
 
 
-class MusicianViewSet(viewsets.ModelViewSet):
+class MusicianViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows musicians to be viewed or edited.
     """
@@ -49,15 +49,15 @@ class MusicianViewSet(viewsets.ModelViewSet):
     serializer_class = MusicianSerializer
 
 
-class SongViewSet(viewsets.ModelViewSet):
+class TrackViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows songs to be viewed or edited.
     """
-    queryset = Song.objects.all().order_by('name')
-    serializer_class = SongSerializer
+    queryset = Track.objects.all().order_by('name')
+    serializer_class = TrackSerializer
 
 
-class RelatedLinkViewSet(viewsets.ModelViewSet):
+class RelatedLinkViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows related links to be viewed or edited.
     """
